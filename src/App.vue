@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Todolist/>
+    <font-awesome-icon icon="fa-solid fa-user-secret" />
   </div>
 </template>
 

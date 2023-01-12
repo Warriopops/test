@@ -57,3 +57,12 @@ Juste quelques règles :
 - PAS de jquery =( mdrr ouai jquery c'est pas fou en soi, mais vu comment ça vas plus vite en vue à mon avis tu vas preferer
 ca marche je look tout ca merci tkt! 
 - c'est tout =()
+
+
+
+
+LISTE DE TACHES :
+
+1. FAIRE UN EXEMPLE DE TODOLIST
+2. QUAND TU ECRIS UNE TACHE CA LE RENTRE DANS LES TACHES
+3.AJOUTER L ICONES POUBELLE ET CHECK

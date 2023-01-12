@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <template>
     <h1>Ma todolist</h1>
     <section id="todolist">
@@ -9,14 +10,13 @@
                     style="height: 30px; font-size: 20px;"
                     placeholder="Ecris ta tâche...">
                 </label>
-                    <img src="add.png" alt="add"/>
             </div>
         </div>
         <ul class="matodo">
             <div class="todo-2">
                 <div class="todo-container">
                     <p>test</p>
-                    <img src="check.png" alt="check">
+                    <img src="add.png" alt="check">
                 </div>
             </div>
             <div class="todo-2">
@@ -27,8 +27,13 @@
             <div class="todo-2">
                 <div class="todo-container">
                     <p>test</p>
+                    <font-awesome-icon icon="fa-solid fa-Trash-Alt" />
+                    <font-awesome-icon icon="fa-solid fa-trash" />
+                    <i class="fa-solid fa-trash"></i>
                 </div>
             </div>
+            <i class="fa-solid fa-trash"></i>
+            <font-awesome-icon icon="fa-solid fa-trash" />
         </ul>
     </section>
 </template>
