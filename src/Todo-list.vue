@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <template>
     <h1>Ma todolist</h1>
     <section id="todolist">
@@ -9,6 +8,8 @@
                     <input type="text" id="input" name="name" size="30"
                     style="height: 30px; font-size: 20px;"
                     placeholder="Ecris ta tâche...">
+                    <i class="fa-solid fa-plus"></i>
+                    {{ message }}
                 </label>
             </div>
         </div>
@@ -16,32 +17,43 @@
             <div class="todo-2">
                 <div class="todo-container">
                     <p>test</p>
-                    <img src="add.png" alt="check">
+                    <div class="objet">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-trash"></i>
+                    </div>
                 </div>
             </div>
             <div class="todo-2">
                 <div class="todo-container">
                     <p>test</p>
+                    <div class="objet">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-trash"></i>
+                    </div>
                 </div>
             </div>
             <div class="todo-2">
                 <div class="todo-container">
                     <p>test</p>
-                    <font-awesome-icon icon="fa-solid fa-Trash-Alt" />
-                    <font-awesome-icon icon="fa-solid fa-trash" />
-                    <i class="fa-solid fa-trash"></i>
+                    <div class="objet" id="app">
+                        {{ message }}
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-trash"></i>
+                    </div>
                 </div>
             </div>
-            <i class="fa-solid fa-trash"></i>
-            <font-awesome-icon icon="fa-solid fa-trash" />
         </ul>
     </section>
 </template>
 
 <script>
-export default {
-
-};
+    const vm = Vue.createApp({
+        data() {
+            return {
+                message: 'hello world',
+            };
+        },
+    }).mount('#app');
 </script>
 
 <style lang ="scss">
@@ -70,6 +82,7 @@ export default {
         width:100%;
         size: 100%;
         margin-top:-10px;
+        position:relative;
     }
     .matodo{
         margin-left:auto;
@@ -84,12 +97,36 @@ export default {
         font-size:25px;
     }
     .todo-container{
-        height: 30px;
+        height:40px;
         border-bottom: 2px solid rgb(187, 187, 187);;
         border-width: auto;
-        text-align: left;
-        margin-bottom: 0px;
+        margin-bottom: 20px;
         margin-left:0px;
+        margin-right:30px;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .objet{
+        margin-left:20px;
+    }
+    .fa-trash{
+        font-size:25px;
+    }
+    .fa-check{
+        font-size: 25px;
+        margin-right:10px;
+    }
+    .fa-check:hover{
+        color:rgb(0, 92, 0);
+    }
+    .fa-trash:hover{
+        color:rgb(177, 0, 0);
+    }
+    .fa-plus{
+        color:black;
+        font-size:25px;
+        position:relative;
         margin-right:30px;
     }
 </style>

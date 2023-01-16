@@ -6,14 +6,14 @@
 </template>
 
 <script>
-import Todolist from './Todo-list.vue';
+    import Todolist from './Todo-list.vue';
 
-export default {
-  name: 'App',
-  components: {
-    Todolist,
-  },
-};
+    export default {
+        name: 'App',
+        components: {
+            Todolist,
+        },
+    };
 </script>
 
 <style>
