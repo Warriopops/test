@@ -47,76 +47,12 @@
     </section>
     <button @click="confetis()">Console log array</button>
     </div>
-    <div
-        class="drop-zone"
-        @drop="onDrop($event, 1)"
-        @dragenter.prevent
-        @dragover.prevent>
-        <div
-            v-for="item in getList(1)"
-            :key="item.id"
-            class="drag-el"
-            draggable="true"
-            @dragstart="startDrag($event, item)"
-            >
-            {{ item.title }}
-        </div>
-    </div>
-    <div
-        class="drop-zone"
-        @drop="onDrop($event, 2)"
-        @dragenter.prevent
-        @dragover.prevent>
-        <div
-            v-for="item in getList(2)"
-            :key="item.id"
-            class="drag-el"
-            draggable="true"
-            @dragstart="startDrag($event, item)"
-            >
-            {{ item.title }}
-        </div>
-    </div>
 </template>
 
 <script>
-    import { ref } from 'vue';
     import JSConfetti from 'js-confetti';
 
     export default {
-        setup() {
-            const items = ref([
-                { id: 0, title: 'Item a', list: 1 },
-                { id: 1, title: 'Item b', list: 1 },
-                { id: 2, title: 'Item c', list: 2 },
-            ]);
-            // eslint-disable-next-line arrow-body-style
-            const getList = (list) => {
-                return items.value.filter((item) => item.list === list);
-            };
-
-            const startDrag = (event, item) => {
-                console.log(item);
-                // eslint-disable-next-line no-param-reassign
-                event.dataTransfer.dropEffect = 'move';
-                // eslint-disable-next-line no-param-reassign
-                event.dataTransfer.effectAllowed = 'move';
-                event.dataTransfer.setData('itemID', item.id);
-            };
-
-            const onDrop = (event, list) => {
-                const itemID = event.dataTransfer.getData('itemID');
-                // eslint-disable-next-line no-shadow
-                const item = items.value.find((item) => item.id === itemID);
-                item.list = list;
-            };
-
-            return {
-                getList,
-                onDrop,
-                startDrag,
-            };
-        },
         data() {
             return {
                 editmessage: '',
@@ -125,15 +61,12 @@
                 appname: 'testo',
                 id: 2,
                 save: [],
-                todos: [
-                    {
-                        key: 0, contenus: 'test', check: false, edit: true,
-                    },
-                    {
-                        key: 1, contenus: 'tedst', check: false, edit: true,
-                    },
-                ], // v-for="objet in tableau" // {{objet}} ou {{tableau.contenus}}
+                todos: [],
             };
+        },
+        mounted() {
+            const todosInStorage = localStorage.getItem('todos')?.toString();
+            this.todos = JSON.parse(todosInStorage);
         },
         methods: {
             AddTodo() {
@@ -141,6 +74,8 @@
                     this.todos.push({ key: this.id, contenus: this.message, edit: true });
                     this.id += 1; // id++
                     this.message = '';
+                    const newtodos = this.todos[0];
+                    this.saveTodo(newtodos);
                 }
             },
             consoleLog() {
@@ -150,6 +85,7 @@
             removeTodo: function (index) {
                 console.log(index);
                 this.todos.splice(index, 1);
+                this.saveTodo();
             },
             saveTask(index) {
                 this.todos[index].contenus = this.editmessage;
@@ -198,6 +134,9 @@
                 this.todos[index] = this.todos[index - 1];
                 this.todos[index - 1] = this.save;
                 this.save = [];
+            },
+            saveTodo() {
+                localStorage.setItem('todos', JSON.stringify(this.todos));
             },
         },
         computed: {
