@@ -153,7 +153,7 @@
 
 <style lang ="scss">
     .liste{ // a changer
-        background-image: url(/home/warriopops/todolist/src/assets/fo.jpg);
+        background-image: url(/src/assets/fo.jpg);
         background-size:contain;
         background-color: rgb(240, 128, 128);
         color:white;
@@ -186,7 +186,7 @@
         position:relative;
     }
     .matodo{ // a changer
-        background-image:url(/home/warriopops/todolist/src/assets/popo.jpg);
+        background-image:url(/src/assets/popo.jpg);
         background-size:cover;
         margin-left:auto;
         margin-right: auto;
