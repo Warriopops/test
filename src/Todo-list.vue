@@ -8,11 +8,11 @@
             <h2>Liste</h2>
             <div class="input">
                 <label for="input">
-                    <input @keyup.enter="AddTodo()" type="text"
+                    <input @keyup.enter="AddTodo(), confetis()" type="text"
                     v-model="message" name="name" size="30"
                     style="height: 30px; font-size: 20px;"
                     v-bind:placeholder="blablabla">
-                    <i class="fa-solid fa-plus" @click="AddTodo()"></i>
+                    <i class="fa-solid fa-plus" @click="AddTodo(), confetis()"></i>
                 </label>
             </div>
         </div>
@@ -26,10 +26,13 @@
                             {{ todo.contenus }}
                         </div>
                         <input v-else v-on:keyup.enter="saveTask(index)"
-                        ref="input" id="input" v-model="editmessage" placeholder="modifie moi" >
+                        ref="input" id="input" v-model="editmessage"
+                        :placeholder= "[[this.todos[index].contenus]]"
+                        @blur="onBlurMethod(index)" >
                         <div class="objet" >
-                            <i class="fa-solid fa-check"
-                             @click="checkTask(index)"></i>
+                            <i class="fa-solid fa-arrow-up" @click="upTodo(index)"></i>
+                            <i class="fa-solid fa-arrow-down" @click="downTodo(index)"></i>
+                            <i class="fa-solid fa-check" @click="checkTask(index)"></i>
                             <i class="fa-solid fa-trash" @click="removeTodo(index)"></i>
                         </div>
                     </div>
@@ -39,16 +42,81 @@
         <div class="check">
         <p>Tâche check : {{ checkTaske }} </p>
         <p>Total des tâches : {{ totalTask }}</p>
-        <button @click="focusInput(0)">Test Fonction</button>
+        <button @click="confetis()">Test Fonction</button>
         </div>
     </section>
-    <button @click="consoleLog">Console log array</button>
+    <button @click="confetis()">Console log array</button>
+    </div>
+    <div
+        class="drop-zone"
+        @drop="onDrop($event, 1)"
+        @dragenter.prevent
+        @dragover.prevent>
+        <div
+            v-for="item in getList(1)"
+            :key="item.id"
+            class="drag-el"
+            draggable="true"
+            @dragstart="startDrag($event, item)"
+            >
+            {{ item.title }}
+        </div>
+    </div>
+    <div
+        class="drop-zone"
+        @drop="onDrop($event, 2)"
+        @dragenter.prevent
+        @dragover.prevent>
+        <div
+            v-for="item in getList(2)"
+            :key="item.id"
+            class="drag-el"
+            draggable="true"
+            @dragstart="startDrag($event, item)"
+            >
+            {{ item.title }}
+        </div>
     </div>
 </template>
 
 <script>
+    import { ref } from 'vue';
+    import JSConfetti from 'js-confetti';
 
     export default {
+        setup() {
+            const items = ref([
+                { id: 0, title: 'Item a', list: 1 },
+                { id: 1, title: 'Item b', list: 1 },
+                { id: 2, title: 'Item c', list: 2 },
+            ]);
+            // eslint-disable-next-line arrow-body-style
+            const getList = (list) => {
+                return items.value.filter((item) => item.list === list);
+            };
+
+            const startDrag = (event, item) => {
+                console.log(item);
+                // eslint-disable-next-line no-param-reassign
+                event.dataTransfer.dropEffect = 'move';
+                // eslint-disable-next-line no-param-reassign
+                event.dataTransfer.effectAllowed = 'move';
+                event.dataTransfer.setData('itemID', item.id);
+            };
+
+            const onDrop = (event, list) => {
+                const itemID = event.dataTransfer.getData('itemID');
+                // eslint-disable-next-line no-shadow
+                const item = items.value.find((item) => item.id === itemID);
+                item.list = list;
+            };
+
+            return {
+                getList,
+                onDrop,
+                startDrag,
+            };
+        },
         data() {
             return {
                 editmessage: '',
@@ -56,6 +124,7 @@
                 app_name: 'Todolist',
                 appname: 'testo',
                 id: 2,
+                save: [],
                 todos: [
                     {
                         key: 0, contenus: 'test', check: false, edit: true,
@@ -101,7 +170,35 @@
                 });
                 // this.$refs.input[index].focus();
             },
-
+            onBlurMethod(index) {
+                if (this.todos[index].edit === false) {
+                    this.todos[index].edit = !this.todos[index].edit;
+                    this.editmessage = '';
+                }
+            },
+            confetis() {
+                const jsConfetti = new JSConfetti();
+                jsConfetti.addConfetti();
+                jsConfetti.addConfetti({
+                    emojis: ['🛩', '🛰', '🚁', '✨', '🚀', '🛸', '🧑🏼‍✈️'],
+                });
+                jsConfetti.addConfetti({
+                    confettiRadius: 0,
+                    confettiNumber: 500,
+                });
+            },
+            downTodo(index) {
+                this.save = this.todos[index];
+                this.todos[index] = this.todos[index + 1];
+                this.todos[index + 1] = this.save;
+                this.save = [];
+            },
+            upTodo(index) {
+                this.save = this.todos[index];
+                this.todos[index] = this.todos[index - 1];
+                this.todos[index - 1] = this.save;
+                this.save = [];
+            },
         },
         computed: {
             totalTask() {
@@ -183,7 +280,7 @@
         text-decoration-color: rgb(131, 0, 0);
     }
     .objet{
-        margin-left:20px;
+        margin:0px;
     }
     .fa-trash{
         font-size:25px;
@@ -225,6 +322,29 @@
     }
     .test{
         color:white;
+    }
+    .drop-zone{
+        width: 50%;
+        margin: 50px auto;
+        background-color: white;
+        padding:10px;
+        min-height: 10px;
+    }
+    .drag-el{
+        background-color:blue;
+        color:white;
+        padding:5px;
+        margin-bottom:10px;
+    }
+    .drag-el:nth-last-of-type(1){
+        margin-bottom: 0;
+    }
+    .fa-arrow-up , .fa-arrow-down{
+        color:white;
+        margin-right:5px;
+    }
+    .fa-arrow-up:hover , .fa-arrow-down:hover{
+        color:rgb(110, 110, 110);
     }
 </style>
 
